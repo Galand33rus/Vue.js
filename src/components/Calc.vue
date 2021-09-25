@@ -11,7 +11,7 @@
         v-for="operation in operations"
         :key="operation"
         @click="calculate(operation)"
-        :disabled="op1 === '' || op2 === '' || isNaN(op1) || isNaN(op2) || operation === '/' && op2 == 0 || operation === '÷' && op2 == 0 || operation === '^' && op1 == 0 && op2 <= 0">
+        :disabled="check(operation)">
         {{ operation }}
       </button>
       <div class="checkbox">
@@ -128,6 +128,22 @@ export default {
       } else if (this.picked === 2) {
         this.op2 = this.op2.slice(0, -1)
       }
+    },
+    check (operation) {
+      if (this.op1 === '' || this.op2 === '') { // проверяет на пустую строку
+        return true
+      }
+      if (isNaN(this.op1) || isNaN(this.op2)) { // проверяет на число
+        return true
+      }
+      switch (operation) {
+        case '/':
+        case '÷':
+          return +this.op2 === 0 // проверяет деление на 0
+        case '^':
+          return +this.op1 === 0 && this.op2 <= 0 // проверяет возведение 0 в степень 0 или отрицательную степень
+      }
+      return false
     }
   }
 }
