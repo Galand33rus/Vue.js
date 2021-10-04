@@ -1,14 +1,14 @@
 <template>
   <div class="form">
-    <select v-model="category">
-      <option disabled value="">Choose category</option>
+    <input list="category" v-model="category" placeholder="Category">
+    <datalist id="category">
       <option
         v-for="(option, idx) in selectList"
         :key="idx"
         :value="option">
         {{ option }}
       </option>
-    </select>
+    </datalist>
     <input placeholder="Value" v-model="value" type="number"/>
     <input placeholder="Date" v-model="date" type="date"/>
     <button @click="onSaveClick">add +</button>
