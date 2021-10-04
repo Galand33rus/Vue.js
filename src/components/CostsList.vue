@@ -7,26 +7,13 @@
         <span class="category">Category</span>
         <span class="value">Value</span>
       </li>
-<!--      <li v-for="(item, idx) in items" :key="idx">-->
-<!--        <span class="number">{{ item.id }}</span>-->
-<!--        <span class="date">{{ item.date }} </span>-->
-<!--        <span class="category">{{ item.category }}</span>-->
-<!--        <span class="value">{{ item.value }}</span>-->
-<!--      </li>-->
-      <li v-for="(ite, idx) in items" :key="idx">
+      <li v-for="(item, idx) in items" :key="idx">
         <span class="number">{{ idx + 1 }}</span>
-        <span class="date">{{ ite.date }} </span>
-        <span class="category">{{ ite.category }}</span>
-        <span class="value">{{ ite.value }}</span>
+        <span class="date">{{ item.date }} </span>
+        <span class="category">{{ item.category }}</span>
+        <span class="value">{{ item.value }}</span>
       </li>
     </ul>
-<!--    <ul v-for="(item, idx) in items" :key="idx">-->
-
-<!--    </ul>-->
-
-<!--    <div v-for="(item, idx) in items" :key="idx">-->
-<!--      <div>{{ item.page1 }}</div>-->
-<!--    </div>-->
   </div>
 
 </template>
