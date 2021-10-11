@@ -12,17 +12,7 @@
         <span class="date">{{ item.date }} </span>
         <span class="category">{{ item.category }}</span>
         <span class="value">{{ item.value }}</span>
-        <span class="material-icons-outlined tools-open">
-          more_vert
-          <span class="tools">
-              <span class="tool" @click="showInput=!showInput"><span class="material-icons-outlined">edit</span>Edit</span>
-              <input class="newCategory" type="text" v-if="showInput" v-model="newCategory" placeholder="Edit category">
-              <input class="newValue" type="number" v-if="showInput" v-model="newValue" placeholder="Edit value">
-              <button @click="editItem(item.id)" v-if="showInput">save</button>
-              <span class="tool" @click="removeItem(item.id)"><span class="material-icons-outlined">delete</span>Delete</span>
-          </span>
-        </span>
-
+        <span class="material-icons-outlined tools-open" @click="onClickContextItem($event,item)">more_vert</span>
       </li>
     </ul>
   </div>
@@ -50,19 +40,26 @@ export default {
     }
   },
   methods: {
-    editItem (id) {
-      const data = {
-        id: id,
-        category: this.newCategory,
-        value: Number(this.newValue)
-      }
-      this.$store.commit('editDataToPaymentsList', data)
-      this.newCategory = ''
-      this.newValue = ''
-      this.showInput = false
+    onClickContextItem (event, item) {
+      const items = [
+        {
+          text: 'Edit',
+          action: () => {
+            this.$context.EventBus.$emit('showInput', item)
+          }
+        },
+        {
+          text: 'Delete',
+          action: () => {
+            this.actionDelete(item.id)
+          }
+        }
+      ]
+      this.$context.show({ event, items })
     },
-    removeItem (id) {
+    actionDelete (id) {
       this.$store.commit('delDataToPaymentsList', id)
+      this.$context.close()
     }
   }
 }

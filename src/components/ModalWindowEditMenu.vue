@@ -1,12 +1,15 @@
 <template>
-  <div class="tools">
-      <span class="tool" @click="showInput=!showInput">
-        <span class="material-icons-outlined">edit</span>Edit
-      </span>
-      <input class="newCategory" type="text" v-if="showInput" v-model="newCategory" placeholder="Edit category">
-      <input class="newValue" type="number" v-if="showInput" v-model="newValue" placeholder="Edit value">
-      <button @click="editItem(item.id)" v-if="showInput">save</button>
-      <span class="tool" @click="removeItem(item.id)"><span class="material-icons-outlined">delete</span>Delete</span>
+  <div class="context" v-if="shown" :style="styles">
+    <div
+      class="context__item"
+      v-for="item in items"
+      :key="item.text"
+      @click="onCLick(item)">
+      {{ item.text }}
+    </div>
+    <input class="newCategory" type="text" v-if="showInput" v-model="newCategory">
+    <input class="newValue" type="number" v-if="showInput" v-model="newValue">
+    <button @click="editItem(id)" v-if="showInput">save</button>
   </div>
 </template>
 
@@ -17,7 +20,12 @@ export default {
     return {
       showInput: false,
       newCategory: '',
-      newValue: ''
+      newValue: '',
+      id: 0,
+      items: [],
+      shown: false,
+      xPos: 0,
+      yPos: 0
     }
   },
   methods: {
@@ -28,18 +36,62 @@ export default {
         value: Number(this.newValue)
       }
       this.$store.commit('editDataToPaymentsList', data)
-      this.newCategory = ''
-      this.newValue = ''
       this.showInput = false
+      this.shown = false
     },
-    removeItem (id) {
-      this.$store.commit('delDataToPaymentsList', id)
+    onCLick (item) {
+      item.action()
+    },
+    onShown ({ items, caller }) {
+      this.items = items
+      this.shown = true
+      this.setPosition(caller)
+    },
+    onClose () {
+      this.items = []
+      this.shown = false
+    },
+    setPosition (caller) {
+      const pos = caller.getBoundingClientRect()
+      this.xPos = pos.left
+      this.yPos = pos.top
     }
+  },
+  computed: {
+    styles () {
+      return {
+        top: `${this.yPos + 20}px`,
+        left: `${this.xPos + 20}px`
+      }
+    }
+  },
+  mounted () {
+    this.$context.EventBus.$on('shown', this.onShown)
+    this.$context.EventBus.$on('close', this.onClose)
+    this.$context.EventBus.$on('showInput', (data) => {
+      this.newValue = data.value
+      this.newCategory = data.category
+      this.date = data.date
+      this.id = data.id
+      this.showInput = true
+    })
+  },
+  beforeDestroy () {
+    this.$context.EventBus.$off('shown', this.onShown)
+    this.$context.EventBus.$off('close', this.onClose)
+    this.$context.EventBus.$off('showInput')
   }
 }
+
 </script>
 
 <style scoped lang="scss">
+.context {
+  position: absolute;
+  background: #eee;
+  cursor: pointer;
+}
+
 .material-icons-outlined {
   cursor: pointer;
 }
