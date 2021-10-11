@@ -43,13 +43,13 @@ export default {
     onClickContextItem (event, item) {
       const items = [
         {
-          text: 'Edit',
+          text: 'edit',
           action: () => {
             this.$context.EventBus.$emit('showInput', item)
           }
         },
         {
-          text: 'Delete',
+          text: 'delete',
           action: () => {
             this.actionDelete(item.id)
           }

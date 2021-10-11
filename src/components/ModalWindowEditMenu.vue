@@ -5,6 +5,7 @@
       v-for="item in items"
       :key="item.text"
       @click="onCLick(item)">
+      <span class="material-icons-outlined">{{ item.text }}</span>
       {{ item.text }}
     </div>
     <input class="newCategory" type="text" v-if="showInput" v-model="newCategory">
@@ -42,7 +43,10 @@ export default {
     onCLick (item) {
       item.action()
     },
-    onShown ({ items, caller }) {
+    onShown ({
+      items,
+      caller
+    }) {
       this.items = items
       this.shown = true
       this.setPosition(caller)
