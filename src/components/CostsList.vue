@@ -1,64 +1,62 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col :cols="1">#</v-col>
-      <v-col :cols="3">Data</v-col>
-      <v-col :cols="4">Category</v-col>
-      <v-col :cols="2">Value</v-col>
-      <v-col :cols="2"></v-col>
-    </v-row>
-    <v-row v-for="(item, idx) in items" :key="idx">
-      <v-col :cols="1">{{ item.id }}</v-col>
-      <v-col :cols="3">{{ item.date }}</v-col>
-      <v-col :cols="4">{{ item.category }}</v-col>
-      <v-col :cols="2">{{ item.value }}</v-col>
-      <v-col :cols="2">
-        <v-dialog v-model="dialog" width="500">
-          <template v-slot:activator="{ on }">
-            <v-icon small class="mr-2" v-on="on" @click="dialog = !dialog">mdi-pencil</v-icon>
-          </template>
-          <v-card>
-            <v-text-field v-model="newCategory" label="Category"/>
-            <v-text-field v-model="newValue" label="Value" type="number"/>
-            <v-btn @click="editItem(item.id)">Save</v-btn>
-<!--            <CostsAdd :selectList="categoryList"/>-->
-          </v-card>
-        </v-dialog>
-        <v-icon small @click="removeItem(item.id)">mdi-delete</v-icon>
-      </v-col>
-    </v-row>
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
+        <tr>
+          <th class="text-left">#</th>
+          <th class="text-left">Date</th>
+          <th class="text-left">Category</th>
+          <th class="text-left">Value</th>
+          <th class="text-left"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, idx) in items" :key="idx">
+          <td>{{ item.id }}</td>
+          <td>{{ item.date }}</td>
+          <td>{{ item.category}}</td>
+          <td>{{ item.value }}</td>
+          <td>
+            <v-dialog v-model="dialog" width="500" :retain-focus="false">
+              <template v-slot:activator="{ on }">
+                <v-icon small class="mr-2" v-on="on" @click="dialog = !dialog">mdi-pencil</v-icon>
+              </template>
+              <v-card>
+                <CostsEdit @closeAdd="closeWindow" :item="item"/>
+              </v-card>
+            </v-dialog>
+            <v-icon small @click="removeItem(item.id)">mdi-delete</v-icon>
+          </td>
+        </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+
+<!--      <v-col :cols="2">-->
+<!--        <v-dialog v-model="dialog" width="500">-->
+<!--          <template v-slot:activator="{ on }">-->
+<!--            <v-icon small class="mr-2" v-on="on" @click="dialog = !dialog">mdi-pencil</v-icon>-->
+<!--          </template>-->
+<!--          <v-card>-->
+<!--            <CostsEdit/>-->
+<!--            <v-text-field v-model="newCategory" label="Category"/>&ndash;&gt;-->
+<!--            <v-text-field v-model="newValue" label="Value" type="number"/>&ndash;&gt;-->
+<!--            <v-btn @click="editItem(item.id)">Save</v-btn>&ndash;&gt;-->
+<!--            <CostsAdd :selectList="categoryList"/>&ndash;&gt;-->
+<!--          </v-card>-->
+<!--        </v-dialog>-->
+
   </v-container>
-
-  <!--  <ul>-->
-  <!--    <li class="title">-->
-  <!--      <span class="number">#</span>-->
-  <!--      <span class="date">Data</span>-->
-  <!--      <span class="category">Category</span>-->
-  <!--      <span class="value">Value</span>-->
-  <!--    </li>-->
-  <!--    <li v-for="(item, idx) in items" :key="idx">-->
-  <!--      <span class="number">{{ item.id }}</span>-->
-  <!--      <span class="date">{{ item.date }} </span>-->
-  <!--      <span class="category">{{ item.category }}</span>-->
-  <!--      <span class="value">{{ item.value }}</span>-->
-  <!--      <span class="material-icons-outlined tools-open">-->
-  <!--            more_vert-->
-  <!--            <span class="tools">-->
-  <!--                <span class="tool"><span class="material-icons-outlined">edit</span>Edit</span>-->
-  <!--                <span class="tool" @click="removeItem(item.id)"><span class="material-icons-outlined">delete</span>Delete</span>-->
-  <!--            </span>-->
-  <!--          </span>-->
-
-  <!--    </li>-->
-  <!--  </ul>-->
 </template>
 
 <script>
 
-// import CostsAdd from '@/components/CostsAdd'
+import CostsEdit from '@/components/CostsEdit'
+
 export default {
   name: 'CostsList',
-  // components: { CostsAdd },
+  components: { CostsEdit },
   props: {
     items: {
       type: Array
@@ -78,17 +76,21 @@ export default {
   methods: {
     editItem (id) {
       console.log(id)
-      const data = {
-        id: id,
-        category: this.newCategory,
-        value: Number(this.newValue)
-      }
-      this.$store.commit('editDataToPaymentsList', data)
-      this.newCategory = ''
-      this.newValue = ''
+      // const data = {
+      //   id: id,
+      //   category: this.newCategory,
+      //   value: Number(this.newValue)
+      // }
+      // this.$store.commit('editDataToPaymentsList', data)
+      // this.newCategory = ''
+      // this.newValue = ''
     },
     removeItem (id) {
+      console.log(id)
       this.$store.commit('delDataToPaymentsList', id)
+    },
+    closeWindow () {
+      this.dialog = false
     }
   },
   computed: {

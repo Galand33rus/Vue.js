@@ -1,39 +1,43 @@
 <template>
-  <div class="calc">
+  <v-container>
     <div class="input">
-      <input v-model="op1" placeholder="введите число" @focus="picked = 1" autofocus name="op1">
-      <input v-model="op2" placeholder="введите число" @focus="picked = 2" name="op2">
-      = <span class="error" v-if="(isNaN(op1) || isNaN(op2))">Введите число</span>
-      <span v-else>{{ result }}</span>
+      <v-text-field v-model="op1" label="Enter a number" type="number"/>
+      <v-text-field v-model="op2" label="Enter a number" type="number"/>
+      <v-text-field v-model="result" label="Result" value=""/>
+      <!--      <input v-model="op1" placeholder="введите число" @focus="picked = 1" autofocus name="op1">-->
+      <!--      <input v-model="op2" placeholder="введите число" @focus="picked = 2" name="op2">-->
+<!--      = <span class="error" v-if="(isNaN(op1) || isNaN(op2))">Введите число</span>-->
+<!--      <span v-else>{{ result }}</span>-->
     </div>
     <div class="key">
-      <button
+      <v-btn
         v-for="operation in operations"
         :key="operation"
         @click="calculate(operation)"
         :name="operation"
         :disabled="check(operation)">
         {{ operation }}
-      </button>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" v-model="toggle" name="toggle"> Экранная клавиатура
-        </label>
-      </div>
-      <div class="keyboard" v-if="toggle">
-        <button v-for="number in numbers" :key="number" @click="add(number)" :name="number">
-          {{ number }}
-        </button>
-        <button @click="remove" name="remove">
-          &larr;
-        </button>
-        <div class="radio-button">
-          <label><input type="radio" v-model="picked" :value="1" name="radio1" id="op1">Операнд 1</label>
-          <label><input type="radio" v-model="picked" :value="2" name="radio2" id="op2">Операнд 2</label>
+      </v-btn>
+        <v-checkbox v-model="toggle" label="On-screen keyboard" color="orange darken-1"/>
+        <div class="keyboard" v-if="toggle">
+          <v-btn v-for="number in numbers" :key="number" @click="add(number)" color="orange darken-1" dark>
+            {{ number }}
+          </v-btn>
+          <v-btn @click="remove" name="remove" color="orange darken-1" dark>
+            &larr;
+          </v-btn>
+            <v-radio-group v-model="picked" >
+              <v-radio :value="1" color="orange darken-1" label="Operand 1"></v-radio>
+              <v-radio :value="2" color="orange darken-1" label="Operand 2"></v-radio>
+            </v-radio-group>
+<!--            <label><input type="radio" v-model="picked" :value="1" name="radio1" id="op1">Операнд 1</label>-->
+<!--            <label><input type="radio" v-model="picked" :value="2" name="radio2" id="op2">Операнд 2</label>-->
         </div>
-      </div>
     </div>
-  </div>
+  </v-container>
+  <!--  <div class="calc">-->
+
+  <!--  </div>-->
 </template>
 
 <script>
