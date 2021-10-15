@@ -6,7 +6,7 @@
     </v-row>
     <v-row justify="space-between">
       <v-btn @click="editItem(item)" color="orange darken-1" dark>Save</v-btn>
-      <v-btn @click="closeWindow" color="orange darken-1" dark>close</v-btn>
+      <v-btn @click="closeWindow(item)" color="orange darken-1" dark>close</v-btn>
     </v-row>
   </v-card>
 </template>
@@ -40,11 +40,11 @@ export default {
       // this.newCategory = ''
       // this.newValue = ''
     },
-    closeWindow () {
+    closeWindow (item) {
       this.category = ''
       this.value = ''
       this.date = ''
-      this.$emit('closeAdd')
+      this.$emit('closeAdd', item)
     }
   },
   mounted () {

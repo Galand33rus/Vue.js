@@ -9,7 +9,7 @@
       <v-col :cols="6">
         <v-dialog v-model="dialog" width="500" persistent>
           <template v-slot:activator="{ on }">
-            <v-btn color="orange darken-1" dark v-on="on" @click="dialog = !dialog">
+            <v-btn color="orange darken-1" dark v-on="on">
               Add new cost <v-icon>mdi-plus</v-icon>
             </v-btn>
           </template>
@@ -17,7 +17,7 @@
             <CostsAdd :selectList="categoryList" @closeAdd="closeWindow" @addCostsItem="addCostsItem"/>
           </v-card>
         </v-dialog>
-        <CostsList :items="currentElements"/>
+        <CostsList :items="currentElements" :category="categoryList" @render="render"/>
         <v-pagination
           v-model="page"
           :length="paginationLength"
@@ -44,14 +44,12 @@ import { Doughnut } from 'vue-chartjs'
 export default {
   name: 'PersonalCosts',
   extends: Doughnut,
-  // mixins: [mixins.reactiveData],
   components: {
     CostsList,
     CostsAdd
   },
   data () {
     return {
-      showForm: false,
       page: 1,
       quantity: 5,
       category: '',
@@ -70,9 +68,38 @@ export default {
     ]),
     addCostsItem (data) {
       this.addDataToPaymentsList(data)
+      this.render()
     },
     closeWindow () {
       this.dialog = false
+    },
+    render () {
+      this.renderChart({
+        labels: this.getCategoryList,
+        datasets: [{
+          label: '# of Votes',
+          data: this.chartValue,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(255, 206, 86, 0.5)',
+            'rgba(75, 192, 192, 0.5)',
+            'rgba(156, 39, 176, 0.5)',
+            'rgba(255, 159, 64, 0.5)',
+            'rgba(0, 150, 136, 0.5)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(156, 39, 176, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(0, 150, 136, 1)'
+          ],
+          borderWidth: 3
+        }]
+      })
     }
   },
   computed: {
@@ -102,18 +129,12 @@ export default {
       return this.paymentsList.slice(quantity * (page - 1), quantity * (page - 1) + quantity)
     },
     chartValue () {
-      // console.log(this.getChart)
       return this.getChart
     },
     paginationLength () {
       return Math.ceil(this.length / this.quantity)
     }
   },
-  // watch: {
-  //   chartData () {
-  //     this.$data._chart.update()
-  //   }
-  // },
   created () {
     this.fetchData()
     this.loadCategories()
@@ -123,32 +144,7 @@ export default {
     // this.showForm = this.$route.name === 'addLink'
   },
   mounted () {
-    this.renderChart({
-      labels: this.getCategoryList,
-      datasets: [{
-        label: '# of Votes',
-        data: this.chartValue,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.5)',
-          'rgba(54, 162, 235, 0.5)',
-          'rgba(255, 206, 86, 0.5)',
-          'rgba(75, 192, 192, 0.5)',
-          'rgba(156, 39, 176, 0.5)',
-          'rgba(255, 159, 64, 0.5)',
-          'rgba(0, 150, 136, 0.5)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(156, 39, 176, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(0, 150, 136, 1)'
-        ],
-        borderWidth: 3
-      }]
-    })
+    this.render()
   }
 }
 </script>

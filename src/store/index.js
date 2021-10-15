@@ -22,7 +22,8 @@ export default new Vuex.Store({
       state.categoryList = payload
     },
     delDataToPaymentsList (state, payload) {
-      state.paymentsList.splice(payload - 1, 1)
+      // state.paymentsList.splice(payload - 1, 1)
+      state.paymentsList = state.paymentsList.filter(item => item.id !== payload)
       let n = 1
       state.paymentsList.map(item => {
         item.id = n
