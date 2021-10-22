@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import PersonalCosts from '@/views/PersonalCosts'
-import Calculator from '@/views/Calc'
-import About from '@/views/About'
-import Home from '@/views/Home'
-import NotFound from '@/views/NotFound'
+import PersonalCosts from '../views/PersonalCosts'
+import Calculator from '../views/Calc'
+import About from '../views/About'
+import Home from '../views/Home'
+import NotFound from '../views/NotFound'
 
 Vue.use(Router)
 

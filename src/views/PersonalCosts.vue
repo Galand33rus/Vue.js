@@ -7,17 +7,12 @@
     </v-row>
     <v-row>
       <v-col :cols="6">
-        <v-dialog v-model="dialog" width="500" persistent>
-          <template v-slot:activator="{ on }">
-            <v-btn color="orange darken-1" dark v-on="on">
-              Add new cost <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </template>
-          <v-card>
-            <CostsAdd :selectList="categoryList" @closeAdd="closeWindow" @addCostsItem="addCostsItem"/>
-          </v-card>
-        </v-dialog>
-        <CostsList :items="currentElements" :category="categoryList"/>
+        <CostsList
+          :items="currentElements"
+          :categoryList="categoryList"
+          @addCostsItem="addCostsItem"
+          @editCostsItem="editCostsItem"
+          @delCostsItem="delCostsItem"/>
         <v-pagination
           v-model="page"
           :length="paginationLength"
@@ -37,17 +32,15 @@
 
 <script>
 
-import CostsAdd from '@/components/CostsAdd'
-import CostsList from '@/components/CostsList'
+import CostsList from '../components/CostsList'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import Chart from '@/components/Chart'
+import Chart from '../components/Chart'
 
 export default {
   name: 'PersonalCosts',
   components: {
     Chart,
-    CostsList,
-    CostsAdd
+    CostsList
   },
   data () {
     return {
@@ -71,7 +64,9 @@ export default {
   methods: {
     ...mapMutations([
       'setPaymentsListData',
-      'addDataToPaymentsList'
+      'addDataToPaymentsList',
+      'editDataToPaymentsList',
+      'delDataToPaymentsList'
     ]),
     ...mapActions([
       'fetchData',
@@ -79,6 +74,12 @@ export default {
     ]),
     addCostsItem (data) {
       this.addDataToPaymentsList(data)
+    },
+    editCostsItem (data) {
+      this.editDataToPaymentsList(data)
+    },
+    delCostsItem (data) {
+      this.delDataToPaymentsList(data)
     },
     closeWindow () {
       this.dialog = false

@@ -31,12 +31,13 @@ export default new Vuex.Store({
       })
     },
     editDataToPaymentsList (state, payload) {
-      Vue.set(state.paymentsList, payload.id - 1, {
-        category: payload.category,
-        value: payload.value,
-        date: state.paymentsList[payload.id - 1].date,
-        id: payload.id
-      })
+      // Vue.set(state.paymentsList, payload.id - 1, {
+      //   category: payload.category,
+      //   value: payload.value,
+      //   date: state.paymentsList[payload.id - 1].date,
+      //   id: payload.id
+      // })
+      Object.assign(state.paymentsList[payload.id - 1], payload)
     }
   },
   getters: {
@@ -61,55 +62,55 @@ export default new Vuex.Store({
       return commit('setPaymentsListData', [
         {
           id: 1,
-          date: '28.03.2020',
+          date: '2020-03-28',
           category: 'Food',
           value: 169
         },
         {
           id: 2,
-          date: '24.03.2020',
+          date: '2020-03-24',
           category: 'Transport',
           value: 360
         },
         {
           id: 3,
-          date: '24.03.2020',
+          date: '2020-03-24',
           category: 'Food',
           value: 532
         },
         {
           id: 4,
-          date: '21.03.2020',
+          date: '2020-03-21',
           category: 'Housing',
           value: 273
         },
         {
           id: 5,
-          date: '21.03.2020',
+          date: '2020-03-21',
           category: 'Healthcare',
           value: 545
         },
         {
           id: 6,
-          date: '16.03.2020',
+          date: '2020-03-16',
           category: 'Housing',
           value: 502
         },
         {
           id: 7,
-          date: '14.03.2020',
+          date: '2020-03-14',
           category: 'Clothing',
           value: 692
         },
         {
           id: 8,
-          date: '02.03.2020',
+          date: '2020-03-02',
           category: 'Food',
           value: 143
         },
         {
           id: 9,
-          date: '01.03.2020',
+          date: '2020-03-01',
           category: 'Entertainment',
           value: 339
         }

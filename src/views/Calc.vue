@@ -1,44 +1,49 @@
 <template>
   <v-container>
-    <v-row class="flex-column mb-1">
-      <v-text-field v-model="op1" label="Enter a number" type="number"/>
-      <v-text-field v-model="op2" label="Enter a number" type="number"/>
-      <v-text-field v-model="result" label="Result" value=""/>
-    </v-row>
-    <v-row>
-      <v-btn
-        v-for="operation in operations"
-        :key="operation"
-        @click="calculate(operation)"
-        :name="operation"
-        color="orange darken-1"
-        :disabled="check(operation)">
-        {{ operation }}
-      </v-btn>
-    </v-row>
-    <v-row>
-      <v-checkbox v-model="toggle" label="On-screen keyboard" color="orange darken-1"/>
-    </v-row>
-    <v-row v-if="toggle" class="flex-column">
-      <v-row >
+    <v-col>
+      <v-row class="flex-column mb-1">
+        <v-text-field v-model="op1" label="Enter a number" type="number"/>
+        <v-text-field v-model="op2" label="Enter a number" type="number"/>
+        <v-text-field v-model="result" label="Result" value=""/>
+      </v-row>
+      <v-row>
         <v-btn
-          v-for="number in numbers"
-          :key="number"
-          @click="add(number)"
-          color="orange darken-1" dark>
-          {{ number }}
-        </v-btn>
-        <v-btn @click="remove" name="remove" color="orange darken-1" dark>
-          &larr;
+          v-for="operation in operations"
+          :key="operation"
+          @click="calculate(operation)"
+          :name="operation"
+          color="orange darken-1"
+          class="mb-1"
+          :disabled="check(operation)">
+          {{ operation }}
         </v-btn>
       </v-row>
       <v-row>
-        <v-radio-group v-model="picked">
-          <v-radio :value="1" color="orange darken-1" label="Operand 1"></v-radio>
-          <v-radio :value="2" color="orange darken-1" label="Operand 2"></v-radio>
-        </v-radio-group>
+        <v-checkbox v-model="toggle" label="On-screen keyboard" color="orange darken-1"/>
       </v-row>
-    </v-row>
+      <v-row v-if="toggle" class="flex-column pl-2">
+        <v-row >
+          <v-btn
+            v-for="number in numbers"
+            :key="number"
+            @click="add(number)"
+            class="mb-1"
+            color="orange darken-1" dark>
+            {{ number }}
+          </v-btn>
+          <v-btn @click="remove" name="remove" color="orange darken-1" dark>
+            &larr;
+          </v-btn>
+        </v-row>
+        <v-row>
+          <v-radio-group v-model="picked">
+            <v-radio :value="1" color="orange darken-1" label="Operand 1"></v-radio>
+            <v-radio :value="2" color="orange darken-1" label="Operand 2"></v-radio>
+          </v-radio-group>
+        </v-row>
+      </v-row>
+    </v-col>
+
   </v-container>
 </template>
 
